@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "nombre": "Farmacia Picasso",
+    "nombreComercial": "ISABEL BARJA",
+    "direccion": "Pablo Ruiz Picasso 7",
+    "telefono": "935605212",
+    "latitude": 41.530597,
+    "longitude": 2.183367
+  },
+  {
+    "id": 2,
+    "nombre": "LA CREUETA",
+    "nombreComercial": "",
+    "direccion": "Avda. Santiga 32",
+    "telefono": "608109807",
+    "latitude": 41.536810,
+    "longitude": 2.179458
+  },
+  {
+    "id": 3,
+    "nombre": "LA RAMBLA",
+    "nombreComercial": "",
+    "direccion": "Rambla 11",
+    "telefono": "935601062",
+    "latitude": 41.534765,
+    "longitude": 2.180581
+  },
+  {
+    "id": 4,
+    "nombre": "B. RICO",
+    "nombreComercial": "",
+    "direccion": "Avinguda 3, nº16 (LA FLORIDA)",
+    "telefono": "935601705",
+    "latitude": 41.523547,
+    "longitude": 2.192853
+  },
+  {
+    "id": 5,
+    "nombre": "J. GUILLEN",
+    "nombreComercial": "",
+    "direccion": "Avgda. Barcelona 2",
+    "telefono": "935601860",
+    "latitude": 41.533514,
+    "longitude": 2.185812
+  },
+  {
+    "id": 6,
+    "nombre": "MC. SERRANO",
+    "nombreComercial": "",
+    "direccion": "Lleida 9",
+    "telefono": "935600556",
+    "latitude": 41.531478,
+    "longitude": 2.179139
+  },
+  {
+    "id": 7,
+    "nombre": "E. DORDAL",
+    "nombreComercial": "",
+    "direccion": "Pare Rodes 10",
+    "telefono": "935600204",
+    "latitude": 41.53540,
+    "longitude": 2.18143
+  },
+  {
+    "id": 8,
+    "nombre": "C. MELLA",
+    "nombreComercial": "",
+    "direccion": "Avda. 16, nº40 (La Florida de Dalt)",
+    "telefono": "935741183",
+    "latitude": 41.518966,
+    "longitude": 2.188255
+  },
+  {
+    "id": 9,
+    "nombre": "M. MORATO",
+    "nombreComercial": "",
+    "direccion": "Ausias March 38 (TERRA BLANCA)",
+    "telefono": "935743059",
+    "latitude": 41.527638,
+    "longitude": 2.180733
+  }
+]

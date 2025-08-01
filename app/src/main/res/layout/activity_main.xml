@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#336797"
+    tools:context=".view.MainActivity">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/guardiaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginBottom="212dp"
+        android:background="#C1C9CA"
+        android:text="¿ Que farmacia esta de guardia ?"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/logoSponsorView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/recomendationTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="60dp"
+        android:background="#C1C9CA"
+        android:text="Nadie comienza siendo bueno, nadie comienza siendo perfecto, pero solo mejora quien comienza. No necesitas sentirte confiado para empezar, pero necesitar comenzar para sentirte confiado. La confianza no llega de la mano de la motivación, llega después del acto, despues del intento después de la repetición."
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/guardiaButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/logoSponsorView"
+        android:layout_width="127dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginBottom="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+</androidx.constraintlayout.widget.ConstraintLayout>

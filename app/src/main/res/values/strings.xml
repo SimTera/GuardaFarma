@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">GuardaFarma</string>
+    <string name="mensaje1">¡Farmacia abierta las 24h!</string>
+    <string name="mensaje2">Servicio de guardia activo</string>
+    <string name="mensaje3">Texto</string>
+    <string name="mensaje4">Texto</string>
+    <string name="mensaje5">Texto</string>
+    <string name="mensaje6">Texto</string>
+    <string name="mensaje7">Texto</string>
+    <string name="mensaje8">Texto</string>
+    <string name="mensaje9">Texto</string>
+    <string name="mensaje10">Texto</string>
+    <string name="map_content_description">Mapa de farmacias de guardia</string>
+
+</resources>

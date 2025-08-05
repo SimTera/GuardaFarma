@@ -1,10 +1,9 @@
-package com.example.guardafarma.viewmodel
+package com.example.guardafarma.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.guardafarma.repository.LocationService
-import com.example.guardafarma.model.LocationModel
+import com.example.guardafarma.data.local.LocationService
+import com.example.guardafarma.data.model.LocationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

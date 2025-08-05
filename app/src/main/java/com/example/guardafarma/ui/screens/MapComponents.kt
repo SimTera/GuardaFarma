@@ -1,9 +1,9 @@
-package com.example.guardafarma.view
+package com.example.guardafarma.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.example.guardafarma.model.LocationModel
+import com.example.guardafarma.data.model.LocationModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker

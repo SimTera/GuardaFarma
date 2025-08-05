@@ -1,13 +1,12 @@
-package com.example.guardafarma.repository
+package com.example.guardafarma.data.local
 
 import android.content.Context
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
-import com.example.guardafarma.model.GuardiaDTO
-import com.example.guardafarma.model.FarmaciaDTO
+import com.example.guardafarma.data.model.GuardiaDTO
+import com.example.guardafarma.data.model.FarmaciaDTO
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#336797"
-    tools:context=".view.MapViewActivity">
+    tools:context=".ui.screens.MapViewActivity">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"

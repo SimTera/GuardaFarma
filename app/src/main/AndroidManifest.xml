@@ -23,10 +23,10 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".view.MapViewActivity"
+            android:name=".ui.screens.MapViewActivity"
             android:exported="false" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".ui.screens.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

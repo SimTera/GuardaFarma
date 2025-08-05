@@ -1,4 +1,4 @@
-package com.example.guardafarma.model
+package com.example.guardafarma.data.model
 import com.google.android.gms.maps.model.LatLng
 
 data class FarmaciaDTO(

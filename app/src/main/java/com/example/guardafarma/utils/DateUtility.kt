@@ -1,9 +1,11 @@
-package com.example.guardafarma.repository
+package com.example.guardafarma.utils
 
-import java.time.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class DateUtility {
+object DateUtility {
    private val madridZone = ZoneId.of("Europe/Madrid")
 
     // Versión moderna de fechaAjustada()

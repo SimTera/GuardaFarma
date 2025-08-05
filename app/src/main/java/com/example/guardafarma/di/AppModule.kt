@@ -1,10 +1,8 @@
 package com.example.guardafarma.di
 
 import android.content.Context
-import com.example.guardafarma.model.FarmaciaDTO
-import com.example.guardafarma.model.GuardiaDTO
-import com.example.guardafarma.repository.FarmaciaService
-import com.example.guardafarma.repository.GuardiaService
+import com.example.guardafarma.data.local.FarmaciaService
+import com.example.guardafarma.data.local.GuardiaService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

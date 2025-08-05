@@ -1,9 +1,8 @@
-package com.example.guardafarma.view
+package com.example.guardafarma.ui.screens
 
 import androidx.compose.runtime.*
-import com.example.guardafarma.model.LocationModel
-import com.example.guardafarma.viewmodel.MapViewModel
-import com.example.guardafarma.view.GoogleMapComponent //esta en la misma carpeta y no la he de buscar
+import com.example.guardafarma.data.model.LocationModel
+import com.example.guardafarma.ui.viewmodel.MapViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState

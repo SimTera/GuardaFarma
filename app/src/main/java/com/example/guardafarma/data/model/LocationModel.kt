@@ -1,4 +1,4 @@
-package com.example.guardafarma.model
+package com.example.guardafarma.data.model
 
 data class LocationModel (
     val name: String,

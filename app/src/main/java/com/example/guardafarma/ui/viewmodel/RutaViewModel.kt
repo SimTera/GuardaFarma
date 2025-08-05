@@ -1,4 +1,4 @@
-package com.example.guardafarma.viewmodel
+package com.example.guardafarma.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,33 +6,46 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.example.guardafarma.repository.LocationService
 import com.google.android.gms.maps.model.LatLng
 import javax.inject.Inject
-import com.google.maps.android.PolyUtil
 
 
 @HiltViewModel
 class RutaViewModel @Inject constructor(
-    private val mapService: LocationService // Este se inyecta con Hilt y contiene la lógica Directions
+    private val repository: DirectionsRepository
 ) : ViewModel() {
-    private val _ruta = MutableStateFlow<List<LatLng>>(emptyList())
-    val ruta: StateFlow<List<LatLng>> = _ruta
 
-    fun calcularRuta(origen: LatLng, destino: LatLng) {
+    private val _polylinePoints = MutableStateFlow("")
+    val polylinePoints: StateFlow<String> = _polylinePoints
+
+    fun loadRoute(origin: LatLng, destination: LatLng) {
         viewModelScope.launch {
-            try {
-                val directionsResult = LocationService.getDirections(origen, destino)
-                // Decodifica el polyline a lista de LatLng
-                val puntosRuta = PolyUtil.decode(directionsResult.encodedPolyline)
-                _ruta.value = puntosRuta
-            } catch (e: Exception) {
-                // Maneja errores (puede mostrar in UI o log)
-                _ruta.value = emptyList()
-            }
+            _polylinePoints.value = repository.getPolylinePoints(origin, destination)
         }
     }
 }
+
+//@HiltViewModel  //ahora asi parece que no gusta
+//class RutaViewModel @Inject constructor(
+//    private val mapService: LocationService // Este se inyecta con Hilt y contiene la lógica Directions
+//) : ViewModel() {
+//    private val _ruta = MutableStateFlow<List<LatLng>>(emptyList())
+//    val ruta: StateFlow<List<LatLng>> = _ruta
+//
+//    fun calcularRuta(origen: LatLng, destino: LatLng) {
+//        viewModelScope.launch {
+//            try {
+//                val directionsResult = LocationService.getDirections(origen, destino)
+//                // Decodifica el polyline a lista de LatLng
+//                val puntosRuta = PolyUtil.decode(directionsResult.encodedPolyline)
+//                _ruta.value = puntosRuta
+//            } catch (e: Exception) {
+//                // Maneja errores (puede mostrar in UI o log)
+//                _ruta.value = emptyList()
+//            }
+//        }
+//    }
+//}
 
 
 //class RutaViewModel(private val mapService: MapService) : ViewModel() {

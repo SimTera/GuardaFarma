@@ -1,17 +1,12 @@
-package com.example.guardafarma.repository
+package com.example.guardafarma.data.local
 
 import android.content.Context
-import android.provider.ContactsContract.CommonDataKinds.Website.URL
-import com.example.guardafarma.model.LocationModel
+import com.example.guardafarma.data.model.LocationModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.ktx.BuildConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
-import java.net.URL
 import javax.inject.Inject
 
 class LocationService @Inject constructor(

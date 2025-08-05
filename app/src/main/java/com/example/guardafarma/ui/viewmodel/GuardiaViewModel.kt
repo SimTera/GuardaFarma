@@ -1,4 +1,4 @@
-package com.example.guardafarma.viewmodel
+package com.example.guardafarma.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-import com.example.guardafarma.model.GuardiaDTO
-import com.example.guardafarma.model.FarmaciaDTO
-import com.example.guardafarma.repository.DateUtility // Esto esta bien asi
-import com.example.guardafarma.repository.GuardiaService
+import com.example.guardafarma.data.model.GuardiaDTO
+import com.example.guardafarma.data.model.FarmaciaDTO
+import com.example.guardafarma.utils.DateUtility // Esto esta bien asi
+import com.example.guardafarma.data.local.GuardiaService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.example.guardafarma.view
+package com.example.guardafarma.ui.screens
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

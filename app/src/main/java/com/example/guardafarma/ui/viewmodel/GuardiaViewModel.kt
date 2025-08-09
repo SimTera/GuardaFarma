@@ -37,7 +37,7 @@ class GuardiaViewModel @Inject constructor (
     }
 
     fun obtenerFarmaciaDeHoy(farmacias: List<FarmaciaDTO>) {
-        val fechaHoy = DateUtility().formatearFecha(DateUtility().fechaAjustada())
+        val fechaHoy = DateUtility.formatearFecha(DateUtility.fechaAjustada())
         val guardiaHoy = _guardias.value.firstOrNull { it.fecha == fechaHoy }
         _farmaciaDeHoy.value = guardiaHoy?.let { guardia ->
             farmacias.firstOrNull { it.id == guardia.idFarmacia }

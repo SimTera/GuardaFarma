@@ -21,6 +21,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Pruebas
+        //buildConfigField("String", "MAPS_API_KEY", "\"${secrets.getProperty("MAPS_API_KEY")}\"")
+
     }
 
     buildTypes {
@@ -43,6 +47,8 @@ android {
     }
     buildFeatures {
         compose = true
+        // prueba
+        buildConfig = true
     }
     secrets {
         defaultPropertiesFileName = "secrets.properties"

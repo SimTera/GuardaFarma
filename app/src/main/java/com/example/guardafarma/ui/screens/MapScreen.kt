@@ -1,6 +1,18 @@
 package com.example.guardafarma.ui.screens
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import com.example.guardafarma.data.model.LocationModel
 import com.example.guardafarma.ui.viewmodel.MapViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -14,9 +26,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
  * Si el usuario otorga permiso, solicita y muestra su ubicación, más los marcadores definidos.
  */
 
-@OptIn(ExperimentalPermissionsApi::class) //Esto es porque usa una clase que es experimental y puede fallar
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class) //Esto es porque usa una clase que es experimental y puede fallar
 @Composable
 fun MapScreen(
+    onBackClick: () -> Unit = {},
     viewModel: MapViewModel = hiltViewModel()
 ) {
     val permisoUbicacion = rememberPermissionState(
@@ -46,9 +59,36 @@ fun MapScreen(
         }
     }
 
-    // Pasamos la ubicación del usuario y los marcadores a tu GoogleMapComponent
-    GoogleMapComponent(
-        userLocation = userLocation,
-        markers = farmacias
-    )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Mapa de Farmacias") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Volver"
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            GoogleMapComponent(
+                userLocation = userLocation,
+                markers = farmacias
+            )
+        }
+    }
+
+//    // Pasamos la ubicación del usuario y los marcadores a tu GoogleMapComponent
+//    GoogleMapComponent(
+//        userLocation = userLocation,
+//        markers = farmacias
+//    )
 }

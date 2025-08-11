@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.ui.android)
     implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.ui.tooling.preview.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -95,6 +97,7 @@ dependencies {
 
     // Gson si llegas a usar JSON
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Para serializacion y retrofit:
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")

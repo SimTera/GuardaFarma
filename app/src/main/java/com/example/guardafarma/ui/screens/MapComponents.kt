@@ -38,7 +38,9 @@ fun GoogleMapComponent(
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
-        properties = com.google.maps.android.compose.MapProperties(isMyLocationEnabled = true)
+        properties = com.google.maps.android.compose.MapProperties(
+            isMyLocationEnabled = userLocation != null // Solo si tenemos ubicación
+        )
     ) {
         userLocation?.let {
             Marker(

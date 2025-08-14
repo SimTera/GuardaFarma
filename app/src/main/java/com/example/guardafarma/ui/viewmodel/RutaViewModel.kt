@@ -9,7 +9,8 @@ import kotlinx.coroutines.launch
 import com.google.android.gms.maps.model.LatLng
 import com.example.guardafarma.domain.repository.DirectionsRepository
 import javax.inject.Inject
-
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 
 @HiltViewModel
 class RutaViewModel @Inject constructor(
@@ -24,7 +25,13 @@ class RutaViewModel @Inject constructor(
             _polylinePoints.value = repository.getPolylinePoints(origin, destination)
         }
     }
+//    fun loadRoute(origin: LatLng, destination: LatLng, mode: String = "walking") {
+//        viewModelScope.launch {
+//            _polylinePoints.value = repository.getPolylinePoints(origin, destination, mode)
+//        }
+//    }
 }
+
 
 //@HiltViewModel  //ahora asi parece que no gusta
 //class RutaViewModel @Inject constructor(

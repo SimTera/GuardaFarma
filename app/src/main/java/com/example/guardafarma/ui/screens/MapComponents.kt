@@ -12,6 +12,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.example.guardafarma.R
+import com.example.guardafarma.ui.viewmodel.GuardiaViewModel
 
 /**
  * Componente de Google Maps para mostrar la ubicación del usuario y una lista de puntos de interés.
@@ -23,12 +24,16 @@ import com.example.guardafarma.R
 fun GoogleMapComponent(
     userLocation: LocationModel?,
     markers: List<LocationModel>,
+    viewModel: GuardiaViewModel,
     defaultPosition: LatLng = LatLng(41.5348, 2.1826), // Santa Perpètua de Mogoda
     defaultZoom: Float = 15f
 ) {
     val cameraPositionState = rememberCameraPositionState()
 
     val targetLatLng = userLocation?.let { LatLng(it.latitude, it.longitude) } ?: defaultPosition
+
+    val farmaciaDeHoy by viewModel.farmaciaDeHoy.collectAsState()
+
 
     LaunchedEffect(targetLatLng) {
         cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(targetLatLng, defaultZoom))
@@ -50,10 +55,18 @@ fun GoogleMapComponent(
             )
         }
         markers.forEach { location ->
+            val isGuardia = farmaciaDeHoy?.let {
+                it.latitude == location.latitude && it.longitude == location.longitude
+            } ?: false
             Marker(
                 state = MarkerState(LatLng(location.latitude, location.longitude)),
                 title = location.name,
-                icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_farmacia)
+                snippet = if (isGuardia) "⭐ DE GUARDIA ⭐" else "Farmacia",
+                icon = if (isGuardia) {
+                    BitmapDescriptorFactory.fromResource(R.drawable.ic_farmacia)
+                } else {
+                    BitmapDescriptorFactory.fromResource(R.drawable.ic_farmacy_secundary)
+                }
             )
         }
     }

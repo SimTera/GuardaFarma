@@ -19,6 +19,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.guardafarma.ui.viewmodel.GuardiaViewModel
 
 
 /**
@@ -30,7 +31,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun MapScreen(
     onBackClick: () -> Unit = {},
-    viewModel: MapViewModel = hiltViewModel()
+    viewModel: MapViewModel = hiltViewModel(),
+    guardiaViewModel: GuardiaViewModel = hiltViewModel()
+
 ) {
     val permisoUbicacion = rememberPermissionState(
         android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -81,7 +84,8 @@ fun MapScreen(
         ) {
             GoogleMapComponent(
                 userLocation = userLocation,
-                markers = farmacias
+                markers = farmacias,
+                viewModel = guardiaViewModel
             )
         }
     }

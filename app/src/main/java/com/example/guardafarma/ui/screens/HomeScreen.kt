@@ -1,5 +1,6 @@
 package com.example.guardafarma.ui.screens
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,11 +21,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import android.net.Uri
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.guardafarma.data.model.FarmaciaDTO
 import com.example.guardafarma.ui.theme.GuardaFarmaTheme
 import com.example.guardafarma.ui.viewmodel.FarmaciaViewModel
 import com.example.guardafarma.ui.viewmodel.GuardiaViewModel
@@ -34,12 +38,14 @@ import com.example.guardafarma.ui.viewmodel.GuardiaViewModel
 @Composable
 fun HomeScreen(
     onMapClick: () -> Unit = {},
+    onNavigateToFarmacia: (FarmaciaDTO) -> Unit = {},
     onBackFromMap: () -> Unit = {},
     farmaciaViewModel: FarmaciaViewModel = hiltViewModel(),
     guardiaViewModel: GuardiaViewModel = hiltViewModel()
 ) {
     val farmacias by farmaciaViewModel.farmacias.collectAsState()
     val farmaciaDeHoy by guardiaViewModel.farmaciaDeHoy.collectAsState()
+    val context = LocalContext.current
 
     // Cargar datos al iniciar
     LaunchedEffect(Unit) {
@@ -82,7 +88,7 @@ fun HomeScreen(
 
             // Título principal
             Text(
-                text = "Encuentra tu farmacia de guardia",
+                text = "Encuentra tu farmacia de guardia", // poner lo del mensaje aleatorio aqui
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Medium
@@ -132,6 +138,41 @@ fun HomeScreen(
                                 text = "Tel: ${farmaciaDeHoy!!.telefono}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        // Boton para que me lleve:
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+
+                                val geoUri = "geo:${farmaciaDeHoy!!.latitude},${farmaciaDeHoy!!.longitude}?q=${farmaciaDeHoy!!.latitude},${farmaciaDeHoy!!.longitude}(${farmaciaDeHoy!!.nombre})"
+
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+                                context.startActivity(intent)
+                            }
+                        )
+//                        (
+//                            onClick = {
+//                                // Llamar a la función que pasaremos como parámetro
+//                                onNavigateToFarmacia(farmaciaDeHoy!!)
+//                            },
+//                            modifier = Modifier.fillMaxWidth(),
+//                            shape = RoundedCornerShape(8.dp),
+//                            colors = ButtonDefaults.buttonColors(
+//                                containerColor = MaterialTheme.colorScheme.tertiary
+//                            )
+//                        )
+                        {
+                            Icon(
+                                imageVector = Icons.Default.LocationOn,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Cómo llegar",
+                                fontWeight = FontWeight.Medium
                             )
                         }
                     } else {
@@ -188,7 +229,7 @@ fun HomeScreen(
 
             // Mensaje aleatorio (si lo implementas)
             Text(
-                text = "💊 Encuentra siempre la farmacia más cercana",
+                text = "💊 Created with the support of Farmacia Picasso \uD83D\uDC8A",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant

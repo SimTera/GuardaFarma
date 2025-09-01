@@ -150,7 +150,11 @@ fun HomeScreen(
 
                                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
                                 context.startActivity(intent)
-                            }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = androidx.compose.ui.graphics.Color(0xFF009688),
+                                contentColor = androidx.compose.ui.graphics.Color.White
+                                    )
                         )
 //                        (
 //                            onClick = {
@@ -193,7 +197,11 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = androidx.compose.ui.graphics.Color(0xFF009688),
+                    contentColor = androidx.compose.ui.graphics.Color.White
+                )
             ) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,

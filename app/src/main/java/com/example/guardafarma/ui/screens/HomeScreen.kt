@@ -140,7 +140,7 @@ fun HomeScreen(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                        // Boton para que me lleve:
+                        // Boton para que me lleve a farmacia guardia:
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Button(
@@ -155,19 +155,7 @@ fun HomeScreen(
                                 containerColor = androidx.compose.ui.graphics.Color(0xFF009688),
                                 contentColor = androidx.compose.ui.graphics.Color.White
                                     )
-                        )
-//                        (
-//                            onClick = {
-//                                // Llamar a la función que pasaremos como parámetro
-//                                onNavigateToFarmacia(farmaciaDeHoy!!)
-//                            },
-//                            modifier = Modifier.fillMaxWidth(),
-//                            shape = RoundedCornerShape(8.dp),
-//                            colors = ButtonDefaults.buttonColors(
-//                                containerColor = MaterialTheme.colorScheme.tertiary
-//                            )
-//                        )
-                        {
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.LocationOn,
                                 contentDescription = null,

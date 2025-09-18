@@ -12,6 +12,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.example.guardafarma.R
+import com.example.guardafarma.data.model.FarmaciaDTO
 import com.example.guardafarma.ui.viewmodel.GuardiaViewModel
 
 /**
@@ -23,7 +24,7 @@ import com.example.guardafarma.ui.viewmodel.GuardiaViewModel
 @Composable
 fun GoogleMapComponent(
     userLocation: LocationModel?,
-    markers: List<LocationModel>,
+    farmacias: List<FarmaciaDTO>,
     viewModel: GuardiaViewModel,
     defaultPosition: LatLng = LatLng(41.5348, 2.1826), // Santa Perpètua de Mogoda
     defaultZoom: Float = 15f
@@ -54,14 +55,25 @@ fun GoogleMapComponent(
                 snippet = "Estas aquí."
             )
         }
-        markers.forEach { location ->
+        farmacias.forEach { farmacia ->
             val isGuardia = farmaciaDeHoy?.let {
-                it.latitude == location.latitude && it.longitude == location.longitude
+                it.id == farmacia.id
             } ?: false
+            val snippet = if (isGuardia) {
+                "⭐ DE GUARDIA ⭐"
+            } else {
+                // Para farmacias que no están de guardia, mostrar información adicional
+                buildString {
+                    append(farmacia.direccion)
+                    if (farmacia.telefono.isNotEmpty()) {
+                        append("\nTel: ${farmacia.telefono}")
+                    }
+                }
+            }
             Marker(
-                state = MarkerState(LatLng(location.latitude, location.longitude)),
-                title = location.name,
-                snippet = if (isGuardia) "⭐ DE GUARDIA ⭐" else "Farmacia",
+                state = MarkerState(LatLng(farmacia.latitude, farmacia.longitude)),
+                title = farmacia.nombre,
+                snippet = snippet,
                 icon = if (isGuardia) {
                     BitmapDescriptorFactory.fromResource(R.drawable.ic_farmacia)
                 } else {

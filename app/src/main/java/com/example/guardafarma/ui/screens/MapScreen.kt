@@ -19,6 +19,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.guardafarma.ui.viewmodel.FarmaciaViewModel
 import com.example.guardafarma.ui.viewmodel.GuardiaViewModel
 
 
@@ -32,26 +33,53 @@ import com.example.guardafarma.ui.viewmodel.GuardiaViewModel
 fun MapScreen(
     onBackClick: () -> Unit = {},
     viewModel: MapViewModel = hiltViewModel(),
-    guardiaViewModel: GuardiaViewModel = hiltViewModel()
+    guardiaViewModel: GuardiaViewModel = hiltViewModel(),
+    farmaciaViewModel: FarmaciaViewModel = hiltViewModel() //añadido para cargar desde json
 
 ) {
     val permisoUbicacion = rememberPermissionState(
         android.Manifest.permission.ACCESS_FINE_LOCATION
     )
     val userLocation by viewModel.location.collectAsState()
+    val farmacias by farmaciaViewModel.farmacias.collectAsState() //añadido para cargar desde json
 
     // PRUEBA: Lista hardcodeada de farmacias/puntos de interés
-    val farmacias = listOf(
-        LocationModel("Picasso", 41.530597,2.183367),
-        LocationModel("La Creueta", 41.536810, 2.179458),
-        LocationModel("La Rambla", 41.534765, 2.180581),
-        LocationModel("B. Rico", 41.523547, 2.192853),
-        LocationModel("J. Guillen", 41.533514, 2.185812),
-        LocationModel("MC. Serrano", 41.531478, 2.179139),
-        LocationModel("E. Ordal", 41.53540, 2.18143),
-        LocationModel("C. Mella", 41.518966, 2.188255),
-        LocationModel("M. Morato",41.527638, 2.180733)
-    )
+//    val farmacias = listOf(
+//        LocationModel("Picasso", 41.530597,2.183367),
+//        LocationModel("La Creueta", 41.536810, 2.179458),
+//        LocationModel("La Rambla", 41.534765, 2.180581),
+//        LocationModel("B. Rico", 41.523547, 2.192853),
+//        LocationModel("J. Guillen", 41.533514, 2.185812),
+//        LocationModel("MC. Serrano", 41.531478, 2.179139),
+//        LocationModel("E. Ordal", 41.53540, 2.18143),
+//        LocationModel("C. Mella", 41.518966, 2.188255),
+//        LocationModel("M. Morato",41.527638, 2.180733)
+//    )
+
+    // Cargar datos de farmacia al iniciar
+    LaunchedEffect(Unit) {
+        farmaciaViewModel.cargarDatos()
+        guardiaViewModel.cargarGuardias()
+    }
+
+    // Actualizar farmacia cuando cambien los datos
+    LaunchedEffect(farmacias) {
+        if (farmacias.isNotEmpty()) {
+            guardiaViewModel.obtenerFarmaciaDeHoy(farmacias)
+        }
+    }
+
+    // Pasar FarmaciaDTO a LocationModel (esto es para no pasar todos los datos)
+//    val farmaciaLocations = remember(farmacias) {
+//        farmacias.map { farmacia ->
+//            LocationModel(
+//                name= farmacia.nombre,
+//                latitude = farmacia.latitude,
+//                longitude = farmacia.longitude
+//            )
+//        }
+//    }
+
 
     // Pedimos permiso de ubicación y la ubicacion solo si aún no la tenemos
     LaunchedEffect(permisoUbicacion.status) {
@@ -84,7 +112,7 @@ fun MapScreen(
         ) {
             GoogleMapComponent(
                 userLocation = userLocation,
-                markers = farmacias,
+                farmacias = farmacias,
                 viewModel = guardiaViewModel
             )
         }

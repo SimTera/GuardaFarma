@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">GuardaFarma</string>
+    <string name="app_name">GuardaFarmaSPM</string>
     <string name="mensaje1">¡Farmacia abierta las 24h!</string>
     <string name="mensaje2">Servicio de guardia activo</string>
-    <string name="mensaje3">Texto</string>
-    <string name="mensaje4">Texto</string>
-    <string name="mensaje5">Texto</string>
-    <string name="mensaje6">Texto</string>
-    <string name="mensaje7">Texto</string>
-    <string name="mensaje8">Texto</string>
-    <string name="mensaje9">Texto</string>
-    <string name="mensaje10">Texto</string>
+    <string name="mensaje3">Recuerda informar a tu medico o a tu farmacéutico de todos los medicamentos que estás tomando. Incluye productos naturales, vitaminas y remedios homeopáticos, ya que pueden interactuar con los medicamentos prescritos.</string>
+    <string name="mensaje4">No partas ni tritures comprimidos sin consultar con un profesional. Algunos comprimidos tienen recubrimientos especiales o liberación prolongada y partirlos puede alterar su efecto</string>
+    <string name="mensaje5">Recuerda seguir siemore las indicaciones del médico y consultar cualquier duda o reacción al medicamento con el personal de la farmacia o con el medico.</string>
+    <string name="mensaje6">Revisa la fecha de caducidad antes de usar cualquier producto. La fecha de caducidad garantiza que el producto mantenga su seguridad, calidad y eficacia hasta ese momento, siempre que se haya conservado en su envase original y en condiciones adecuadas.</string>
+    <string name="mensaje7">Presta atención a los horarios de toma. Algunos medicamentos funcionan mejor si se toman a una hora específica del día o con el estómago vacío/lleno.</string>
+    <string name="mensaje8">Devuelve los medicamentos caducados, o si has terminado el tratamiento, al punto SIGRE de la farmacia para su correcto reciclaje.</string>
+    <string name="mensaje9">Gracias por confiar en FarmaGuardiaSPM. Si te resulta útil, valoranos en Google Play y dejanos un comentario, los tendremos en cuenta para futuras actualizaciones.</string>
+    <string name="mensaje10">¿Tienes sugerencias o mejoras? Valoramos mucho tu opinion y si te ha sido de utilidad, compártela con tus amigos</string>
     <string name="map_content_description">Mapa de farmacias de guardia</string>
 
 </resources>

@@ -10,11 +10,11 @@ plugins {
 
 
 android {
-    namespace = "com.example.guardafarma"
+    namespace = "es.munvall.guardafarma"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.guardafarma"
+        applicationId = "es.munvall.guardafarma"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

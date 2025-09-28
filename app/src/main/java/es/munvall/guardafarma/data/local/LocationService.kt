@@ -4,7 +4,7 @@ import android.content.Context
 import es.munvall.guardafarma.data.model.LocationModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
+import org.osmdroid.util.GeoPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -14,13 +14,6 @@ class LocationService @Inject constructor(
 ) {
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
-
-    // En LocationService o RouteService (según tu estructura) he de crearlo entero:
-    suspend fun getDirections(origin: LatLng, destination: LatLng): String {
-        // TODO: Implementar - Llamar a Google Directions API
-        // y devolver el "overview_polyline" de la ruta.
-        throw NotImplementedError("Esta función se debe implementar: fetch directions route")
-    }
 
     suspend fun getLastKnownLocation(): LocationModel? {
         return try {

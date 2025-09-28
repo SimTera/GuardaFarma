@@ -1,6 +1,8 @@
 package es.munvall.guardafarma.ui.screens
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -11,340 +13,138 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import es.munvall.guardafarma.data.model.FarmaciaDTO
-import es.munvall.guardafarma.data.model.LocationModel
-import es.munvall.guardafarma.ui.viewmodel.MapViewModel
-import es.munvall.guardafarma.ui.viewmodel.RutaViewModel
+
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.android.gms.maps.model.LatLng
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.graphics.vector.ImageVector
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
-import es.munvall.guardafarma.R
+
+import androidx.compose.foundation.shape.RoundedCornerShape
+
+import androidx.compose.ui.platform.LocalContext
 
 
-// Enum para tipos de transporte
-enum class TransportMode(val displayName: String, val apiValue: String, val icon: ImageVector) {
-    WALKING("A pie", "walking", Icons.Default.Person),
-    DRIVING("En coche", "driving", Icons.Default.Person),
-    TRANSIT("Transporte público", "transit", Icons.Default.Person),
-    BICYCLING("En bicicleta", "bicycling", Icons.Default.Person)
-}
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun RouteToFarmaciaScreen(
     farmacia: FarmaciaDTO,
-    onBackClick: () -> Unit = {},
-    mapViewModel: MapViewModel = hiltViewModel(),
-    rutaViewModel: RutaViewModel = hiltViewModel()
+    onBackClick: () -> Unit = {}
+
 ) {
-    val permisoUbicacion = rememberPermissionState(
-        Manifest.permission.ACCESS_FINE_LOCATION
-    )
-    val userLocation by mapViewModel.location.collectAsState()
-    val polylinePoints by rutaViewModel.polylinePoints.collectAsState()
-
-    var selectedTransport by remember { mutableStateOf(TransportMode.WALKING) }
-    var isLoadingRoute by remember { mutableStateOf(false) }
-    var routeError by remember { mutableStateOf<String?>(null) }
-
-    // Solicitar ubicación al iniciar
-    LaunchedEffect(permisoUbicacion.status) {
-        if (permisoUbicacion.status.isGranted) {
-            mapViewModel.fetchUserLocation()
-        } else {
-            permisoUbicacion.launchPermissionRequest()
-        }
-    }
-
-    // Cargar ruta cuando tengamos ubicación del usuario
-    LaunchedEffect(userLocation, selectedTransport) {
-        userLocation?.let { userLoc ->
-            isLoadingRoute = true
-            routeError = null
-            try {
-                val origin = LatLng(userLoc.latitude, userLoc.longitude)
-                val destination = LatLng(farmacia.latitude, farmacia.longitude)
-                rutaViewModel.loadRoute(origin, destination)
-            } catch (e: Exception) {
-                routeError = "Error al calcular la ruta"
-            } finally {
-                isLoadingRoute = false
-            }
-        }
-    }
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        "Ruta a ${farmacia.nombreComercial}",
-                        maxLines = 1
-                    )
-                },
+                title = { Text("Ruta a ${farmacia.nombre}") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Volver"
-                        )
+                        Icon(Icons.Default.ArrowBack, "Volver")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 )
             )
-        },
-        bottomBar = {
-            // Bottom sheet con información de la farmacia y controles
-            Surface(
+        }
+    ) { paddingValues ->
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+
+        ) {
+            // Info de la farmacia
+            Card(
                 modifier = Modifier.fillMaxWidth(),
-                shadowElevation = 8.dp,
-                color = MaterialTheme.colorScheme.surface
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Información de la farmacia
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        ) {
-                            Text(
-                                text = farmacia.nombre,
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
-                            )
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Text(
-                                text = farmacia.direccion,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-
-                            if (farmacia.telefono.isNotEmpty()) {
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = "Tel: ${farmacia.telefono}",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                            }
-                        }
-                    }
+                    Icon(
+                        imageVector = Icons.Default.LocationOn,
+                        contentDescription = null,
+                        modifier = Modifier.size(48.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Selector de modo de transporte
                     Text(
-                        text = "Modo de transporte:",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Medium
+                        text = farmacia.nombre,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(TransportMode.values()) { mode ->
-                            TransportModeCard(
-                                mode = mode,
-                                isSelected = selectedTransport == mode,
-                                onClick = { selectedTransport = mode }
-                            )
-                        }
-                    }
+                    Text(
+                        text = farmacia.direccion,
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // Estado de la carga
-                    when {
-                        userLocation == null -> {
-                            Text(
-                                text = "📍 Obteniendo tu ubicación...",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        isLoadingRoute -> {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                CircularProgressIndicator(modifier = Modifier.size(16.dp))
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "Calculando ruta...",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                        }
-                        routeError != null -> {
-                            Text(
-                                text = "⚠️ $routeError",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        polylinePoints.isNotEmpty() -> {
-                            Text(
-                                text = "✅ Ruta calculada",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                    if (farmacia.telefono.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Tel: ${farmacia.telefono}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
                     }
                 }
             }
-        }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            // Mapa con la ruta
-            RouteMapComponent(
-                userLocation = userLocation,
-                farmacia = farmacia,
-                polylinePoints = polylinePoints
-            )
-        }
-    }
-}
-
-@Composable
-fun TransportModeCard(
-    mode: TransportMode,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    Card(
-        onClick = onClick,
-        modifier = Modifier.width(100.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
+            Button(
+                onClick = {
+                    val geoUri = "geo:${farmacia.latitude},${farmacia.longitude}?q=${farmacia.latitude},${farmacia.longitude}(${farmacia.nombre})"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+                    context.startActivity(intent)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("Abrir app Google Maps")
             }
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = if (isSelected) 8.dp else 2.dp
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                imageVector = mode.icon,
-                contentDescription = mode.displayName,
-                modifier = Modifier.size(24.dp),
-                tint = if (isSelected) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                }
-            )
 
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = mode.displayName,
-                style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Center,
-                color = if (isSelected) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+            // Boton para llamar
+            if (farmacia.telefono.isNotEmpty()) {
+                Button(onClick = {
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${farmacia.telefono}"))
+                    context.startActivity(intent)
+                },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("Llamar")
                 }
-            )
+            }
         }
+
     }
 }
 
-@Composable
-fun RouteMapComponent(
-    userLocation: LocationModel?,
-    farmacia: FarmaciaDTO,
-    polylinePoints: String
-) {
-    val cameraPositionState = rememberCameraPositionState()
-
-    // Centrar entre usuario y farmacia, o en la farmacia si no hay ubicación del usuario
-    val targetLatLng = userLocation?.let {
-        // Punto medio entre usuario y farmacia
-        val midLat = (it.latitude + farmacia.latitude) / 2
-        val midLng = (it.longitude + farmacia.longitude) / 2
-        LatLng(midLat, midLng)
-    } ?: LatLng(farmacia.latitude, farmacia.longitude)
-
-    LaunchedEffect(targetLatLng) {
-        cameraPositionState.animate(
-            CameraUpdateFactory.newLatLngZoom(targetLatLng, 14f)
-        )
-    }
-
-    GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        cameraPositionState = cameraPositionState,
-        properties = MapProperties(
-            isMyLocationEnabled = userLocation != null
-        )
-    ) {
-        // Marcador del usuario
-        userLocation?.let {
-            Marker(
-                state = MarkerState(LatLng(it.latitude, it.longitude)),
-                title = "Tu posición",
-                snippet = "Estás aquí",
-                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-            )
-        }
-
-        // Marcador de la farmacia destino
-        Marker(
-            state = MarkerState(LatLng(farmacia.latitude, farmacia.longitude)),
-            title = farmacia.nombre,
-            snippet = "⭐ DE GUARDIA ⭐",
-            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_farmacia)
-        )
-    }
 
 
-}
+

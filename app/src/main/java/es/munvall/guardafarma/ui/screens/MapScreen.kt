@@ -110,7 +110,7 @@ fun MapScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            GoogleMapComponent(
+            OsmMapComponent(
                 userLocation = userLocation,
                 farmacias = farmacias,
                 viewModel = guardiaViewModel

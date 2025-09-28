@@ -17,8 +17,8 @@ android {
         applicationId = "es.munvall.guardafarma"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -84,12 +84,22 @@ dependencies {
 
     // Dependencias específicas para Google Maps con Compose
     implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("com.google.maps.android:android-maps-utils:3.12.0")
 
-
-    implementation("com.google.maps.android:maps-compose:4.4.1")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3") // Usa la última versión disponible para corrutinas
+
+// lo cambiamos por otro mapa
+    implementation("org.osmdroid:osmdroid-android:6.1.20") {
+        exclude(group = "com.j256.ormlite")
+    }
+    // Para servicios WMS
+    implementation("org.osmdroid:osmdroid-wms:6.1.20") {
+        exclude(group = "com.j256.ormlite")
+    }
+    // Para soporte GeoPackage
+    implementation("org.osmdroid:osmdroid-geopackage:6.1.20") {
+        exclude(group = "com.j256.ormlite")
+    }
+
 
     // Opcional: para usar la ubicación del usuario o un json
     implementation("com.google.android.gms:play-services-location:21.2.0")

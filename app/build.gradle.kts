@@ -5,26 +5,32 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("org.jetbrains.kotlin.kapt")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-
 }
 
+// 1 SECRETS DEBE IR FUERA DEL BLOQUE ANDROID
+secrets {
+    defaultPropertiesFileName = "secrets.properties"
+}
+
+// 2 KAPT DEBE IR FUERA DEL BLOQUE ANDROID
+kapt {
+    correctErrorTypes = true
+}
 
 android {
     namespace = "es.munvall.guardafarma"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "es.munvall.guardafarma"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 2
-        versionName = "1.2"
+        targetSdk = 36
+        versionCode = 4
+        versionName = "1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Pruebas
-        //buildConfigField("String", "MAPS_API_KEY", "\"${secrets.getProperty("MAPS_API_KEY")}\"")
-
+        // buildConfigField("String", "MAPS_API_KEY", "\"${secrets.getProperty("MAPS_API_KEY")}\"")
     }
 
     buildTypes {
@@ -36,85 +42,77 @@ android {
             )
         }
     }
+
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        // 3 ACTUALIZADO A JAVA 17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 
-    }
     kotlinOptions {
-        jvmTarget = "11"
+        // 3 ACTUALIZADO A JAVA 17
+        jvmTarget = "17"
     }
+
     buildFeatures {
         compose = true
-        // prueba
         buildConfig = true
-    }
-    secrets {
-        defaultPropertiesFileName = "secrets.properties"
-        // opcionalmente, puedes especificar el nombre del recurso generado
-    }
-    kapt {
-        correctErrorTypes = true // ✅ Dentro de android
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.maps)
-    implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.ui.android)
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.ui.tooling.preview.android)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
+    // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    // ViewModel y Gson
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.gson)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx) // Ejemplo con tu formato
 
-    // Dependencias específicas para Google Maps con Compose
-    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    // Dependencias específicas para Google Maps / Hilt con Compose
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3") // Usa la última versión disponible para corrutinas
-
-// lo cambiamos por otro mapa
+    // OSMDroid (Mapas alternativos)
     implementation("org.osmdroid:osmdroid-android:6.1.20") {
         exclude(group = "com.j256.ormlite")
     }
-    // Para servicios WMS
     implementation("org.osmdroid:osmdroid-wms:6.1.20") {
         exclude(group = "com.j256.ormlite")
     }
-    // Para soporte GeoPackage
     implementation("org.osmdroid:osmdroid-geopackage:6.1.20") {
         exclude(group = "com.j256.ormlite")
     }
+    implementation("mil.nga.geopackage:geopackage-android:6.7.5")
 
-
-    // Opcional: para usar la ubicación del usuario o un json
+    // Ubicación y Permisos
     implementation("com.google.android.gms:play-services-location:21.2.0")
-    implementation ("com.google.accompanist:accompanist-permissions:0.34.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
-    // Gson si llegas a usar JSON
+    // Serialización y Retrofit
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // Para serializacion y retrofit:
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-
-
 }
 
 
